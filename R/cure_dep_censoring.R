@@ -1,9 +1,9 @@
 #---------------------------------------------
 
 #' Dependent Censoring model
-#' @aliases frasurv
+#' @aliases cure_dep_censoring
 #' @export
-#' @description frasurv can be used to fit survival data with dependent censoring, it can also be utilized to take into account informative censoring.
+#' @description cure_dep_censoring can be used to fit survival data with dependent censoring, it can also be utilized to take into account informative censoring.
 #' @param formula an object of class "formula": should be used as 'time ~ failure covariates | informative covariates'.
 #' @param data a data frame, list or environment containing the variables.
 #' @param delta_t Indicator function of the event of interest.
@@ -12,7 +12,7 @@
 #' @param Num_intervals Number of intervals of the time grid (mep only).
 #' @param dist distribution to be used in the model adjustment, specifies the marginal distribution of times (must be either weibull or mep).
 #' @details This function estimates the parameters of the Piecewise exponential model (dist = "mep") or Weibull model (dist = "weibull") with dependent censoring, considering the frailty model to estimate the clusters variability and a parameter that captures the dependence between failure and dependent censoring times.
-#' @return frasurv returns an object of class "dcensoring" containing the results of the fitted models.
+#' @return cure_dep_censoring returns an object of class "dcensoring" containing the results of the fitted models.
 #' An object of class "dcensoring" is a list containing at least the following components:
 #' \itemize{
 #'   \item \code{param_est} a vector containing estimated parameters (dependency parameter, regression coefficients associated with failure times, regression coefficients associated with dependent censoring times, and time distribution parameters (Weibull or piecewise exponential)).
@@ -28,21 +28,21 @@
 #'   \item \code{labels2} labels of the covariates associated with dependent censoring times.
 #'   \item \code{risco_a_T} a vector containing the cumulative baseline hazar of failure times.
 #'   \item \code{risco_a_C} a vector containing the cumulative baseline hazar of dependent censoring times.
-#'   \item \code{bi} a matrix containing the generated fragilities, one of the outputs of the function frasurv, in which the individuals are in the rows and the Monte Carlo replicas in the columns.
-#'   \item \code{X_T} a matrix of variables associated with failure times.
+#'   \item \code{bi} a matrix containing the generated fragilities, one of the outputs of the function cure_dep_censoring, in which the individuals are in the rows and the Monte Carlo replicas in the columns.
+#'   \item \code{X_Cure} a matrix of variables associated with failure times.
 #'   \item \code{X_C} a matrix of variables associated with dependent censoring times.
 #'   \item \code{time} a vector of the observable times.
 #' }
 #' @examples
 #' \donttest{
-#' library(DepCens)
+#' library(cure_dep_censoring)
 #' delta_t <- ifelse(KidneyMimic$cens==1,1,0)
 #' delta_c <- ifelse(KidneyMimic$cens==2,1,0)
-#' fit <- dependent.censoring(formula = time ~ x1 | x3, data=KidneyMimic, delta_t=delta_t,
+#' fit <- cure_dep_censoring(formula = time ~ x1 | x3, data=KidneyMimic, delta_t=delta_t,
 #'                           delta_c=delta_c, ident=KidneyMimic$ident, dist = "mep")
 #' summary_dc(fit)
 #'}
-frasurv <- function(formula, data, delta_t, delta_c, ident, dist = c("weibull", "mep"), Num_intervals = 10){
+cure_dep_censoring <- function(formula, data, delta_t, delta_c, ident, dist = c("weibull", "mep"), Num_intervals = 5){
 
   dist <- match.arg(dist)
 
