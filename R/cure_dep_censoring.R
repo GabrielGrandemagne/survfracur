@@ -35,12 +35,11 @@
 #' }
 #' @examples
 #' \donttest{
-#' library(cure_dep_censoring)
-#' delta_t <- ifelse(KidneyMimic$cens==1,1,0)
-#' delta_c <- ifelse(KidneyMimic$cens==2,1,0)
-#' fit <- cure_dep_censoring(formula = time ~ x1 | x3, data=KidneyMimic, delta_t=delta_t,
-#'                           delta_c=delta_c, ident=KidneyMimic$ident, dist = "mep")
-#' summary_dc(fit)
+#' library(survfracur)
+#' delta_t <- ifelse(simula_cure$cens==1,1,0)
+#' delta_c <- ifelse(simula_cure$cens==2,1,0)
+#' fit <- cure_dep_censoring(formula = time ~ x1_cure | x_c1, data=simula_cure, delta_t=delta_t,
+#'                           delta_c=delta_c, ident=simula_cure$ident, dist = "mep")
 #'}
 cure_dep_censoring <- function(formula, data, delta_t, delta_c, ident, dist = c("weibull", "mep"), Num_intervals = 5){
 
